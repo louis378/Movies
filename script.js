@@ -1,13 +1,13 @@
 // Firebase configuration - REPLACE WITH YOUR ACTUAL CONFIG
 const OMDb_API_KEY = "YOUR_OMDB_API_KEY"; // REPLACE WITH YOUR ACTUAL OMDb API KEY
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBoCfjXbgxvwWuUowIL9hAlhOOCrD10h1s",
+  authDomain: "movie-8b28e.firebaseapp.com",
+  projectId: "movie-8b28e",
+  storageBucket: "movie-8b28e.appspot.com", // Corrected from firebasestorage.app based on typical Firebase config
+  messagingSenderId: "304129310229",
+  appId: "1:304129310229:web:2f4cc3447e9b2fac75d81c",
+  databaseURL: "https://movie-8b28e-default-rtdb.firebaseio.com" // Added common databaseURL format
 };
 
 // Initialize Firebase
