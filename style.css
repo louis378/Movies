@@ -1,0 +1,207 @@
+/* Basic Reset & Body Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: #fff;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+h1, h2, h3 {
+    color: #333;
+    margin-bottom: 0.7em;
+}
+
+/* Form Styling */
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+#charCounter {
+    font-size: 0.9em;
+    color: #666;
+    text-align: right;
+}
+
+button, input[type="submit"] { /* Target both button elements and input type submit if used */
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 5px; /* Spacing between buttons */
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+#fetchPosterBtn {
+    background-color: #337ab7;
+}
+#fetchPosterBtn:hover {
+    background-color: #286090;
+}
+
+#searchBtn {
+     background-color: #337ab7;
+}
+#searchBtn:hover {
+    background-color: #286090;
+}
+
+#clearSearchBtn {
+    background-color: #f0ad4e;
+}
+#clearSearchBtn:hover {
+    background-color: #ec971f;
+}
+
+
+#posterPreview {
+    margin-top: 10px;
+    max-height: 250px; /* Increased max height */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Star Rating (from previous step, ensure it's here) */
+.star-rating {
+    display: inline-block;
+    direction: rtl;
+    font-size: 2em;
+}
+.star-rating input[type="radio"] {
+    display: none;
+}
+.star-rating label {
+    color: #ddd;
+    cursor: pointer;
+    padding: 0 0.1em;
+}
+.star-rating input[type="radio"]:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #f5b301;
+}
+
+/* Review Items on Search Page */
+#reviewsContainer {
+    margin-top: 20px;
+}
+
+.review-item {
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.review-item h3 {
+    margin-top: 0;
+    color: #337ab7;
+}
+
+.review-item img {
+    float: right; /* Align poster to the right */
+    margin-left: 15px;
+    margin-bottom: 10px;
+    max-width: 100px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.review-item p {
+    margin-bottom: 0.5em;
+}
+.review-item small {
+    color: #777;
+    font-style: italic;
+}
+
+.review-item hr {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin-top: 15px;
+}
+
+/* Footer (Optional, but good for completeness) */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: auto; /* Pushes footer to bottom if content is short */
+    color: #777;
+    font-size: 0.9em;
+}

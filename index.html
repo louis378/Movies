@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Review Adder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Movie Review App</h1>
+        <nav>
+            <a href="index.html">Add Review</a>
+            <a href="search.html">Search Reviews</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Add New Movie Review</h2> <!-- Changed from h1 -->
+        <form id="addReviewForm">
+            <div>
+                <label for="movieTitle">Movie Title:</label>
+                <input type="text" id="movieTitle" name="movieTitle" required>
+                <button type="button" id="fetchPosterBtn">Fetch Poster</button>
+            </div>
+            <div>
+                <label>Poster Preview:</label>
+                <img id="posterPreview" src="#" alt="Movie Poster Preview" style="max-width: 150px; display: none;">
+                <input type="hidden" id="posterUrl" name="posterUrl">
+            </div>
+            <div>
+                <label>Rating:</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" required><label for="star5" title="5 stars">&#9733;</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">&#9733;</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">&#9733;</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">&#9733;</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">&#9733;</label>
+                </div>
+            </div>
+            <div>
+                <label for="reviewText">Short Review (Max 150 characters):</label><br>
+                <textarea id="reviewText" name="reviewText" rows="4" cols="50" maxlength="150"></textarea>
+                <div id="charCounter">0/150 characters</div>
+            </div>
+            <button type="submit" id="submitReviewBtn">Save Review</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2023 Movie Review App</p>
+    </footer>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
