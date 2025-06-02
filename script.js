@@ -1,5 +1,4 @@
 // Firebase configuration - REPLACE WITH YOUR ACTUAL CONFIG
-const OMDb_API_KEY = "YOUR_OMDB_API_KEY"; // REPLACE WITH YOUR ACTUAL OMDb API KEY
 const firebaseConfig = {
   apiKey: "AIzaSyBoCfjXbgxvwWuUowIL9hAlhOOCrD10h1s",
   authDomain: "movie-8b28e.firebaseapp.com",
@@ -19,9 +18,8 @@ console.log("Firebase initialized (with placeholder config).");
 // --- Functions for index.html ---
 
 // Function to save movie review data to Firebase
-function saveMovieReview(movieTitle, posterUrl, rating, reviewText) {
-  console.log("Attempting to save review for:", movieTitle, posterUrl, rating, reviewText);
-  // Input validation (basic)
+function saveMovieReview(movieTitle, rating, reviewText) { // posterUrl removed from parameters
+  console.log("Attempting to save review for:", movieTitle, rating, reviewText); // posterUrl removed
   if (!movieTitle || !rating) {
     alert("Movie title and rating are required!");
     return;
@@ -29,7 +27,7 @@ function saveMovieReview(movieTitle, posterUrl, rating, reviewText) {
   const newMovieReviewRef = database.ref('movieReviews').push();
   newMovieReviewRef.set({
     title: movieTitle,
-    poster: posterUrl,
+    // poster: posterUrl, // REMOVE THIS LINE
     rating: rating,
     review: reviewText,
     timestamp: Date.now()
@@ -37,7 +35,6 @@ function saveMovieReview(movieTitle, posterUrl, rating, reviewText) {
   .then(() => {
     console.log("Movie review saved successfully!");
     alert("Movie review saved!");
-    // Optionally, clear the form fields here
   })
   .catch((error) => {
     console.error("Error saving movie review: ", error);
@@ -46,52 +43,6 @@ function saveMovieReview(movieTitle, posterUrl, rating, reviewText) {
 }
 
 // --- Functions for index.html (continued) ---
-
-// Function to fetch movie poster from OMDb
-async function fetchMoviePoster(movieTitle) {
-  if (!OMDb_API_KEY || OMDb_API_KEY === "YOUR_OMDb_API_KEY") {
-    alert("Please set your OMDb API key in script.js");
-    return null;
-  }
-  if (!movieTitle) {
-    alert("Please enter a movie title.");
-    return null;
-  }
-
-  const apiUrl = `https://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${OMDb_API_KEY}`;
-
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-
-    if (data.Response === "True" && data.Poster && data.Poster !== "N/A") {
-      document.getElementById('posterPreview').src = data.Poster;
-      document.getElementById('posterPreview').style.display = 'block';
-      document.getElementById('posterUrl').value = data.Poster;
-      return data.Poster;
-    } else {
-      alert(data.Error || "Movie not found or no poster available.");
-      document.getElementById('posterPreview').style.display = 'none';
-      document.getElementById('posterUrl').value = '';
-      return null;
-    }
-  } catch (error) {
-    console.error("Error fetching movie poster:", error);
-    alert("An error occurred while fetching the poster.");
-    document.getElementById('posterPreview').style.display = 'none';
-    document.getElementById('posterUrl').value = '';
-    return null;
-  }
-}
-
-// Event listener for the "Fetch Poster" button
-const fetchPosterBtn = document.getElementById('fetchPosterBtn');
-if (fetchPosterBtn) {
-  fetchPosterBtn.addEventListener('click', () => {
-    const movieTitle = document.getElementById('movieTitle').value;
-    fetchMoviePoster(movieTitle);
-  });
-}
 
 // Modify the saveMovieReview function slightly to use the hidden posterUrl field.
 // And ensure the tempSubmit button is handled for now.
@@ -103,7 +54,7 @@ if (addReviewForm) {
     event.preventDefault(); // Prevent actual form submission for now
 
     const title = document.getElementById('movieTitle').value;
-    const poster = document.getElementById('posterUrl').value;
+    // const poster = document.getElementById('posterUrl').value; // REMOVED
 
     const ratingElement = document.querySelector('input[name="rating"]:checked');
     if (!ratingElement) {
@@ -114,17 +65,16 @@ if (addReviewForm) {
 
     const reviewText = document.getElementById('reviewText').value;
 
-    if (!poster) {
-        alert("Please fetch a poster first, or if not available, it cannot be saved yet.");
-        // In a final version, we might allow saving without a poster or use a default.
-        return;
-    }
+    // if (!poster) { ... } // ENTIRE BLOCK REMOVED
 
-    saveMovieReview(title, poster, rating, reviewText);
-    addReviewForm.reset(); // Reset form fields
-    document.getElementById('posterPreview').style.display = 'none'; // Hide poster preview
-    document.getElementById('posterUrl').value = ''; // Clear hidden poster URL
+    saveMovieReview(title, rating, reviewText); // Call saveMovieReview without poster
+
+    addReviewForm.reset();
+    // document.getElementById('posterPreview').style.display = 'none'; // REMOVED
+    // document.getElementById('posterUrl').value = ''; // REMOVED
+    const charCounter = document.getElementById('charCounter'); // Keep this if it exists
     if (charCounter) { // Reset character counter display
+        const MAX_CHARS = 150; // Or get this from a global const if defined elsewhere
         charCounter.textContent = `0/${MAX_CHARS} characters`;
     }
   });
@@ -157,12 +107,12 @@ function displayReviews(reviewsData, container) {
             const review = reviewsData[key];
             const reviewElement = document.createElement('div');
             reviewElement.classList.add('review-item'); // For styling
+            // Ensure review.poster is no longer referenced
             reviewElement.innerHTML = `
-                <h3>${review.title}</h3>
-                <img src="${review.poster}" alt="${review.title} Poster" style="max-width: 100px; ${review.poster ? '' : 'display:none;'}">
-                <p>Rating: ${review.rating} stars</p>
-                <p>Review: ${review.review}</p>
-                <small>Reviewed on: ${new Date(review.timestamp).toLocaleDateString()}</small>
+              <h3>${review.title}</h3>
+              <p>Rating: ${review.rating} stars</p>
+              <p>Review: ${review.review}</p>
+              <small>Reviewed on: ${new Date(review.timestamp).toLocaleDateString()}</small>
                 <hr>
             `;
             container.appendChild(reviewElement);

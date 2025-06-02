@@ -1,12 +1,11 @@
 # Movie Review Web App
 
-This is a simple web application that allows users to add and search for movie reviews. Movie posters are fetched dynamically, and data is stored in Firebase Realtime Database. The project is designed to be easily deployable on GitHub Pages.
+This is a simple web application that allows users to add and search for movie reviews. Data is stored in Firebase Realtime Database. The project is designed to be easily deployable on GitHub Pages.
 
 ## Features
 
 - Add new movie reviews:
     - Input movie title.
-    - Automatically fetch movie poster from OMDb API.
     - Rate the movie from 1 to 5 stars.
     - Write a short review (max 150 characters).
 - Search existing movie reviews:
@@ -16,7 +15,7 @@ This is a simple web application that allows users to add and search for movie r
 
 ## Project Setup
 
-To run this project locally or deploy it, you'll need to configure Firebase and an OMDb API key.
+To run this project locally or deploy it, you'll need to configure Firebase.
 
 ### 1. Firebase Setup
 
@@ -49,25 +48,9 @@ To run this project locally or deploy it, you'll need to configure Firebase and 
         ```
     *   Replace the placeholder values (`"YOUR_API_KEY"`, etc.) with the actual values from the Firebase configuration object you copied in step 1.2.
 
-### 2. OMDb API Key Setup
+### 2. Running the Application
 
-This project uses the OMDb (Open Movie Database) API to fetch movie posters.
-
-1.  **Get an API Key:**
-    *   Go to [omdbapi.com](http://www.omdbapi.com/).
-    *   Click on the "API Key" link in the navigation menu.
-    *   Fill out the form to request a free API key. You will receive it via email.
-2.  **Update `script.js`:**
-    *   Open the `script.js` file.
-    *   Find the `OMDb_API_KEY` variable:
-        ```javascript
-        const OMDb_API_KEY = "YOUR_OMDB_API_KEY";
-        ```
-    *   Replace `"YOUR_OMDB_API_KEY"` with the actual API key you received.
-
-### 3. Running the Application
-
-*   Once Firebase and OMDb API keys are configured in `script.js`:
+*   Once Firebase is configured in `script.js`:
     *   Open `index.html` in your web browser to add movie reviews.
     *   Open `search.html` in your web browser to search for movie reviews.
 
@@ -75,10 +58,9 @@ This project uses the OMDb (Open Movie Database) API to fetch movie posters.
 
 -   **Adding a Review (`index.html`):**
     1.  Enter the movie title.
-    2.  Click "Fetch Poster". The poster should appear if found.
-    3.  Select a star rating (1-5 stars).
-    4.  Write a short review (up to 150 characters).
-    5.  Click "Save Review".
+    2.  Select a star rating (1-5 stars).
+    3.  Write a short review (up to 150 characters).
+    4.  Click "Save Review".
 -   **Searching Reviews (`search.html`):**
     1.  The page loads all existing reviews by default.
     2.  Type a movie title in the search box and click "Search" (or press Enter).

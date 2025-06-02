@@ -173,15 +173,6 @@ button:hover, input[type="submit"]:hover {
     color: #337ab7;
 }
 
-.review-item img {
-    float: right; /* Align poster to the right */
-    margin-left: 15px;
-    margin-bottom: 10px;
-    max-width: 100px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-}
-
 .review-item p {
     margin-bottom: 0.5em;
 }
