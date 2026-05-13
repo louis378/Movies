@@ -1,80 +1,47 @@
-# Movie Review Web App
+# 我的電影短評
 
-This is a simple web application that allows users to add and search for movie reviews. Data is stored in Firebase Realtime Database. The project is designed to be easily deployable on GitHub Pages.
+電影短評紀錄與展示工具，使用 GitHub Gist 作為零後端資料庫，部署於 GitHub Pages。
 
-## Features
+**Tech stack:** React 19 + Vite 8 + Tailwind CSS v4
 
-- Add new movie reviews:
-    - Input movie title.
-    - Rate the movie from 1 to 5 stars.
-    - Write a short review (max 150 characters).
-- Search existing movie reviews:
-    - Search by movie title.
-    - View all added reviews.
-- Data persistence using Firebase Realtime Database.
+## 快速開始
 
-## Project Setup
+```bash
+npm install
+cp .env.example .env.local   # 填入 TMDB API Key（選填）
+npm run dev
+```
 
-To run this project locally or deploy it, you'll need to configure Firebase.
+## 設定說明
 
-### 1. Firebase Setup
+1. 前往 [GitHub Settings → Tokens](https://github.com/settings/tokens/new?scopes=gist) 建立有 **gist** 權限的 PAT
+2. 開啟網頁，點右下角 ⚙ 站長設定
+3. 填入 PAT → 點「自動建立新 Gist」→ 儲存設定
 
-1.  **Create a Firebase Project:**
-    *   Go to the [Firebase Console](https://console.firebase.google.com/).
-    *   Click on "Add project" and follow the setup steps.
-2.  **Register your app with Firebase:**
-    *   In your Firebase project dashboard, click on the "Web" icon (`</>`) to add a web app.
-    *   Give your app a nickname and click "Register app".
-    *   Firebase will provide you with a configuration object (firebaseConfig). **Copy this object.**
-3.  **Enable Firebase Realtime Database:**
-    *   In your Firebase project dashboard, go to "Realtime Database" (or "Build" > "Realtime Database").
-    *   Click "Create Database".
-    *   Choose a region.
-    *   Select "Start in **test mode**" for initial development (allows read/write without authentication). For production, you should configure security rules.
-    *   Click "Enable".
-4.  **Update `script.js`:**
-    *   Open the `script.js` file in this project.
-    *   Find the `firebaseConfig` object near the top:
-        ```javascript
-        const firebaseConfig = {
-          apiKey: "YOUR_API_KEY",
-          authDomain: "YOUR_AUTH_DOMAIN",
-          databaseURL: "YOUR_DATABASE_URL", // Make sure this matches your Realtime Database URL
-          projectId: "YOUR_PROJECT_ID",
-          storageBucket: "YOUR_STORAGE_BUCKET",
-          messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-          appId: "YOUR_APP_ID"
-        };
-        ```
-    *   Replace the placeholder values (`"YOUR_API_KEY"`, etc.) with the actual values from the Firebase configuration object you copied in step 1.2.
+## 部署到 GitHub Pages
 
-### 2. Running the Application
+**GitHub Actions（推薦）：** 在 Repo Settings 啟用 Pages（Source: GitHub Actions），推送 `main` 即自動部署。
 
-*   Once Firebase is configured in `script.js`:
-    *   Open `index.html` in your web browser to add movie reviews.
-    *   Open `search.html` in your web browser to search for movie reviews.
+**手動：**
 
-## Usage
+```bash
+npm run deploy
+```
 
--   **Adding a Review (`index.html`):**
-    1.  Enter the movie title.
-    2.  Select a star rating (1-5 stars).
-    3.  Write a short review (up to 150 characters).
-    4.  Click "Save Review".
--   **Searching Reviews (`search.html`):**
-    1.  The page loads all existing reviews by default.
-    2.  Type a movie title in the search box and click "Search" (or press Enter).
-    3.  Click "Clear" to clear the search and view all reviews again.
+## 環境變數
 
-## Deployment to GitHub Pages
+| 變數 | 說明 |
+|------|------|
+| `VITE_TMDB_API_KEY` | [TMDB API Key](https://www.themoviedb.org/settings/api)，用於自動抓取電影海報（選填）|
 
-1.  Ensure your repository has the `index.html` file at the root (or configure GitHub Pages to use a specific folder).
-2.  Go to your repository settings on GitHub.
-3.  Navigate to the "Pages" section.
-4.  Choose the branch to deploy from (e.g., `main` or `master`).
-5.  Select the folder (usually `/root`).
-6.  Save the settings. GitHub will provide you with the URL for your live page.
+GitHub Actions 部署時請在 Repo → Settings → Secrets → Actions 新增 `VITE_TMDB_API_KEY`。
 
-**Note on Firebase Security Rules:**
-For this project, the Firebase Realtime Database is likely set up in "test mode," which allows open read/write access. For a production application, you **must** configure proper security rules to protect your data. For example, you might only allow authenticated users to write data.
+## 資料夾結構
+
+```
+src/
+├── api/           # Gist API、TMDB API 封裝
+├── components/    # React 元件
+├── hooks/         # useAuth（localStorage 狀態）
+└── utils/         # storage、YouTube 工具函式
 ```

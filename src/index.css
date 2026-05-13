@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-zinc-950 text-zinc-100 min-h-screen m-0;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden;
+  }
+
+  .btn-primary {
+    @apply bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-zinc-950 font-semibold
+           px-4 py-2 rounded-xl transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent hover:bg-zinc-800 text-zinc-400 hover:text-zinc-100
+           px-3 py-2 rounded-xl transition-colors duration-150 border border-zinc-700 cursor-pointer;
+  }
+
+  .input {
+    @apply w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-zinc-100
+           placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50
+           focus:border-amber-500/50 transition duration-150;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-zinc-400 mb-1.5;
+  }
+}
