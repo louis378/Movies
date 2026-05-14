@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [initial-movie-review-app]
   workflow_dispatch:
 
 permissions:
@@ -30,7 +30,6 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Put your TMDB API key in GitHub repo Settings → Secrets → Actions
           VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
 
       - uses: actions/upload-pages-artifact@v3
