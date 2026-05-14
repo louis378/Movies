@@ -4,7 +4,7 @@ import { createReviewsGist } from '../api/gist'
 export default function SettingsPanel({ token, gistId, isAuthenticated, onSave, onClear }) {
   const [localToken, setLocalToken] = useState(token)
   const [localGistId, setLocalGistId] = useState(gistId)
-  const [open, setOpen] = useState(!isAuthenticated)
+  const [open, setOpen] = useState(false)
   const [creating, setCreating] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')

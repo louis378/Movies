@@ -1,9 +1,10 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useRef } from 'react'
 import StarRating from './StarRating'
 import { searchMoviePoster } from '../api/tmdb'
 import { extractYouTubeId, youTubeThumbnail } from '../utils/youtube'
 
 const MAX_CHARS = 280
+const MAX_IMAGE_SIZE_MB = 1.5
 const EMPTY = {
   title: '',
   originalTitle: '',
@@ -15,12 +16,31 @@ const EMPTY = {
   watchedAt: new Date().toISOString().slice(0, 10),
 }
 
+function compressImage(file, maxWidth = 600) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const scale = Math.min(1, maxWidth / img.width)
+      const canvas = document.createElement('canvas')
+      canvas.width = img.width * scale
+      canvas.height = img.height * scale
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+      resolve(canvas.toDataURL('image/jpeg', 0.82))
+    }
+    img.onerror = reject
+    img.src = url
+  })
+}
+
 export default function AddReviewForm({ onSubmit, onCancel }) {
   const [form, setForm] = useState(EMPTY)
   const [posterLoading, setPosterLoading] = useState(false)
   const [posterError, setPosterError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const fileInputRef = useRef(null)
   const titleDebounce = useRef(null)
 
   function set(field) {
@@ -46,16 +66,33 @@ export default function AddReviewForm({ onSubmit, onCancel }) {
           posterUrl: info.posterUrl,
           originalTitle: f.originalTitle || info.originalTitle || '',
         }))
-      } else if (info === null) {
-        // TMDB key not set — silently ignore
-      } else {
-        setPosterError('找不到對應海報')
       }
     } catch {
-      setPosterError('海報抓取失敗')
+      // silently ignore TMDB errors
     } finally {
       setPosterLoading(false)
     }
+  }
+
+  async function handleFileUpload(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (!file.type.startsWith('image/')) {
+      setPosterError('請選擇圖片檔案')
+      return
+    }
+    const sizeMB = file.size / 1024 / 1024
+    setPosterError('')
+    setPosterLoading(true)
+    try {
+      const base64 = await compressImage(file, sizeMB > MAX_IMAGE_SIZE_MB ? 400 : 600)
+      setForm((f) => ({ ...f, posterUrl: base64 }))
+    } catch {
+      setPosterError('圖片處理失敗，請改用 URL')
+    } finally {
+      setPosterLoading(false)
+    }
+    e.target.value = ''
   }
 
   const ytId = extractYouTubeId(form.youtubeUrl)
@@ -173,23 +210,56 @@ export default function AddReviewForm({ onSubmit, onCancel }) {
 
         {/* Poster */}
         <div>
-          <label className="label">電影海報 URL</label>
-          <input
-            className="input"
-            type="url"
-            placeholder="自動抓取或手動貼上圖片連結"
-            value={form.posterUrl}
-            onChange={set('posterUrl')}
-          />
-          {posterLoading && <p className="text-xs text-zinc-500 mt-1">搜尋海報中…</p>}
-          {posterError && <p className="text-xs text-amber-400 mt-1">{posterError}</p>}
-          {form.posterUrl && !posterLoading && (
-            <img
-              src={form.posterUrl}
-              alt="海報預覽"
-              className="mt-2 w-24 rounded-lg border border-zinc-700 object-cover"
+          <label className="label">電影海報</label>
+
+          <div className="flex gap-2 mb-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="btn-ghost text-sm flex items-center gap-2"
+            >
+              <span>📁</span> 上傳圖片
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileUpload}
             />
+            <span className="text-zinc-600 text-sm self-center">或</span>
+            <input
+              className="input text-sm flex-1"
+              type="url"
+              placeholder="貼上圖片網址"
+              value={form.posterUrl.startsWith('data:') ? '' : form.posterUrl}
+              onChange={(e) => setForm((f) => ({ ...f, posterUrl: e.target.value }))}
+            />
+          </div>
+
+          {posterLoading && <p className="text-xs text-zinc-500 mt-1">處理中…</p>}
+          {posterError && <p className="text-xs text-amber-400 mt-1">{posterError}</p>}
+
+          {form.posterUrl && !posterLoading && (
+            <div className="relative inline-block mt-2">
+              <img
+                src={form.posterUrl}
+                alt="海報預覽"
+                className="w-24 rounded-lg border border-zinc-700 object-cover"
+              />
+              <button
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, posterUrl: '' }))}
+                className="absolute -top-2 -right-2 bg-zinc-700 hover:bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none transition-colors"
+              >
+                ×
+              </button>
+            </div>
           )}
+
+          <p className="text-xs text-zinc-600 mt-1.5">
+            支援直接上傳（自動壓縮）或貼上圖片網址。
+          </p>
         </div>
 
         {/* Watched date */}
